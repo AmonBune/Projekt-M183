@@ -34,6 +34,8 @@ namespace Role_Based_Authorization.Controllers
                 // Does nothing
             }
 
+            var searchvalue = Request["searchvalue"];
+
             if (current_user_role == "Administrator")
             {
                 // access granted
@@ -83,8 +85,35 @@ namespace Role_Based_Authorization.Controllers
                                 }
                             }
                         }
-                        
-                        table.Add(newTable);
+
+                        // SEARCH FUNCTION BY MENUEL PRO PROGRAMMER
+                        if (searchvalue != null)
+                        {
+                            bool toBeAdded = false;
+                            for (int i = 0; i < 8; i++)
+                            {
+                                try
+                                {
+                                    if (newTable[i].ToString().Contains(searchvalue))
+                                    {
+                                        toBeAdded = true;
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                    // Do nothing
+                                }
+                            }
+
+                            if (toBeAdded)
+                            {
+                                table.Add(newTable);
+                            }
+                        }
+                        else
+                        {
+                            table.Add(newTable);
+                        }
                     }
 
                     ViewBag.table = table;

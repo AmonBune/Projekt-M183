@@ -23,7 +23,7 @@ namespace Role_Based_Authorization.Controllers
             }
             catch (Exception)
             {
-
+                // Do nothing
             }
 
             if (current_user_role == "User")
@@ -71,7 +71,7 @@ namespace Role_Based_Authorization.Controllers
                                 }
                                 catch (Exception)
                                 {
-
+                                    // Do nothing
                                 }
                             }
                         }
