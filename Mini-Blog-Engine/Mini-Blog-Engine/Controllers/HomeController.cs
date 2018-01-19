@@ -106,7 +106,7 @@ namespace Role_Based_Authorization.Controllers
         {
             Models.BlogPost post = new Models.BlogPost();
             string sql = "SELECT * FROM [Post] WHERE [Id] = '" + id + "'";
-            string query2 = "SELECT * FROM [Post] WHERE [PostId] = " + id + "'";
+            string query2 = "SELECT * FROM [Comment] WHERE [PostId] = " + id + "";
             SqlDataReader reader = createConnection(sql);
             if (reader.HasRows)
             {
@@ -118,6 +118,18 @@ namespace Role_Based_Authorization.Controllers
                     post.Content = reader.GetString(4);
                 }
             }
+            SqlDataReader reader2 = createConnection(query2);
+            List<Models.Comment> comments = new List<Models.Comment>();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Models.Comment comment = new Models.Comment();
+                    comment.Text = reader2.GetString(2);
+                    comments.Add(comment);
+                }
+            }
+            post.Comments = comments;
             return View("Post", post);
         }
     }

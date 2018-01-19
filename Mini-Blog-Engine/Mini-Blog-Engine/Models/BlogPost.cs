@@ -11,5 +11,6 @@ namespace Role_Based_Authorization.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public string Description { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

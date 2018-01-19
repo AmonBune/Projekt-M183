@@ -5,4 +5,13 @@
     <div>
         @Html.Label(Model.Content)
     </div>
+    <div>
+        <h3>Comments</h3>
+        @foreach (Role_Based_Authorization.Models.Comment item in Model.Comments)
+        {
+            <div>
+                @Html.Label(item.Text)
+            </div>
+        }
+    </div>
 </div>
