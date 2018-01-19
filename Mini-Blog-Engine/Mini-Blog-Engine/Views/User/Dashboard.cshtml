@@ -11,12 +11,22 @@
             <th>ModifiedOn</th>
             <th>DeletedOn</th>
         </tr>
-        @foreach (var tableItem in ViewBag.TableContent)
+        
+        @foreach (List<object> row in ViewBag.table)
         {
             <tr>
-                @foreach (var TableItemitem in tableItem)
+                @for (int i = 0; i < 8; i++)
                 {
-                    <td>item.Name</td>
+                    <td>
+                        @try
+                        {
+                            @row[i]
+                        }
+                        catch (Exception)
+                        {
+                            //{ { null} }
+                        }
+                    </td>
                 }
             </tr>
         }
