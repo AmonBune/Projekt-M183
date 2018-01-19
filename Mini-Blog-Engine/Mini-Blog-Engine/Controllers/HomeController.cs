@@ -13,13 +13,7 @@ namespace Role_Based_Authorization.Controllers
         public ActionResult Index()
         {
             List<Models.BlogPost> posts = new List<Models.BlogPost>();
-            SqlConnection connection = createConnection();
-            SqlCommand sql = new SqlCommand();
-            sql.Connection = connection;
-            sql.CommandText = "SELECT * FROM [Post] WHERE [DeletedOn] IS NULL";
-
-            connection.Open();
-            SqlDataReader reader = sql.ExecuteReader();
+            SqlDataReader reader = createConnection("SELECT * FROM [Post] WHERE [DeletedOn] IS NULL");
             if (reader.HasRows) {
                 while (reader.Read())
                 {
@@ -53,26 +47,9 @@ namespace Role_Based_Authorization.Controllers
         {
             var username = Request["username"];
             var password = Request["password"];
-     
-            SqlConnection connection = new SqlConnection();
-            if (System.Security.Principal.WindowsIdentity.GetCurrent().Name == "GAMER-LAPTOP\\Gamer-Beast")
-            {
-                connection.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Gamer-Beast\\Documents\\git\\Projekt-M183\\Ressourcen_Projekt\\m183_project.mdf;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30;Application Name=EntityFramework";
-            }
-            else
-            {
-                connection.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Jan\\Documents\\Schule\\M183\\Test\\Projekt-M183\\Ressourcen_Projekt\\m183_project.mdf;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30;Application Name=EntityFramework";
-            }
-            
-            SqlCommand cmd = new SqlCommand();
-            SqlDataReader reader;
 
-            cmd.CommandText = "SELECT [Id], [Username], [Password], [Firstname], [Familyname], [Mobilephonenumber], [Role], [Status] FROM [dbo].[User] WHERE [Username] = '" + username + "' AND [Password] = '" + password + "'";
-            cmd.Connection = connection;
-
-            connection.Open();
-
-            reader = cmd.ExecuteReader();
+            string query = "SELECT [Id], [Username], [Password], [Firstname], [Familyname], [Mobilephonenumber], [Role], [Status] FROM [dbo].[User] WHERE [Username] = '" + username + "' AND [Password] = '" + password + "'";
+            SqlDataReader reader = createConnection(query);
 
             if (reader.HasRows)
             {
@@ -103,7 +80,7 @@ namespace Role_Based_Authorization.Controllers
             return View();
         }
 
-        private SqlConnection createConnection() {
+        private SqlDataReader createConnection(string sql) {
             SqlConnection connection = new SqlConnection();
             if (System.Security.Principal.WindowsIdentity.GetCurrent().Name == "GAMER-LAPTOP\\Gamer-Beast")
             {
@@ -113,24 +90,24 @@ namespace Role_Based_Authorization.Controllers
             {
                 connection.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Jan\\Documents\\Schule\\M183\\Test\\Projekt-M183\\Ressourcen_Projekt\\m183_project.mdf;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30;Application Name=EntityFramework";
             }
-            return connection;
+            SqlCommand sqlcommand = new SqlCommand();
+            sqlcommand.Connection = connection;
+            sqlcommand.CommandText = sql;
+            connection.Open();
+            return sqlcommand.ExecuteReader();
         }
 
         public ActionResult Logout() {
             Session.Clear();
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         public ActionResult ViewPost(int? id)
         {
             Models.BlogPost post = new Models.BlogPost();
-            SqlConnection connection = createConnection();
-            SqlCommand sql = new SqlCommand();
-            sql.Connection = connection;
-            sql.CommandText = "SELECT * FROM [Post] WHERE [Id] = '" + id + "'";
-
-            connection.Open();
-            SqlDataReader reader = sql.ExecuteReader();
+            string sql = "SELECT * FROM [Post] WHERE [Id] = '" + id + "'";
+            string query2 = "SELECT * FROM [Post] WHERE [PostId] = " + id + "'";
+            SqlDataReader reader = createConnection(sql);
             if (reader.HasRows)
             {
                 while (reader.Read())
