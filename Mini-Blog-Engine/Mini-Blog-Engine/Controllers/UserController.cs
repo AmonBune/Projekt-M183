@@ -13,6 +13,7 @@ namespace Role_Based_Authorization.Controllers
         {
 
             var current_user = (string)Session["role"];
+            var current_user_id = (int)Session["userid"];
             var user_roles = MvcApplication.UserRoles;
             var current_user_role = "";
 
@@ -75,7 +76,22 @@ namespace Role_Based_Authorization.Controllers
                             }
                         }
 
-                        table.Add(newTable);
+                        if (newTable[0].Equals(current_user_id))
+                        {
+                            try
+                            {
+                                if (newTable[7] == null)
+                                {
+                                    // WAS NOT DELETED AND IS NULL
+                                    table.Add(newTable);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                // WAS NOT DELETED
+                                table.Add(newTable);
+                            }
+                        }
                     }
 
                     ViewBag.table = table;
