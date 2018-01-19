@@ -19,7 +19,7 @@ namespace Role_Based_Authorization.Controllers
             if (current_user_role == "User")
             {
                 // access granted
-                
+
                 SqlConnection connection = new SqlConnection();
                 if (System.Security.Principal.WindowsIdentity.GetCurrent().Name == "GAMER-LAPTOP\\Gamer-Beast")
                 {
@@ -42,28 +42,30 @@ namespace Role_Based_Authorization.Controllers
 
                 if (reader.HasRows)
                 {
-                    var tableContent1 = "";
+                    List<object> table = new List<object>(); // LIST FOR EVERYTHING
                     while (reader.Read())
                     {
-                        List<object> 
-                        tableContent1 = reader.GetString(0);
-                        tableContent2 = reader.GetString(1);
-                        tableContent3 = reader.GetString(2);
-                        tableContent4 = reader.GetString(3);
-                        tableContent5 = reader.GetString(4);
-                        tableContent6 = reader.GetString(5);
-                        tableContent7 = reader.GetString(6);
-                        tableContent8 = reader.GetString(7);
-                    }
+                        for (int i = 0; i < 8; i++)
+                        {
+                            try
+                            {
+                                table.Add(reader.GetString(i));
+                            }
+                            catch (Exception)
+                            {
+                                try
+                                {
+                                    table.Add(reader.GetInt32(i));
+                                }
+                                catch (Exception)
+                                {
 
-                    ViewBag.TableContent0 = tableContent0;
-                    ViewBag.TableContent1 = tableContent1;
-                    ViewBag.TableContent1 = tableContent1;
-                    ViewBag.TableContent1 = tableContent1;
-                    ViewBag.TableContent1 = tableContent1;
-                    ViewBag.TableContent1 = tableContent1;
-                    ViewBag.TableContent1 = tableContent1;
-                    ViewBag.TableContent1 = tableContent1;
+                                }
+                            }
+                        }
+                    }
+                    
+                    ViewBag.table = table;
 
                     return RedirectToAction("Dashboard", "Admin");
                 }
@@ -76,8 +78,8 @@ namespace Role_Based_Authorization.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            
+
             return View();
-        }       
+        }
     }
 }
