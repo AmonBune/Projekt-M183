@@ -118,14 +118,14 @@ namespace Role_Based_Authorization.Controllers
                     post.Content = reader.GetString(4);
                 }
             }
-            SqlDataReader reader2 = createConnection(query2);
+            SqlDataReader commentReader = createConnection(query2);
             List<Models.Comment> comments = new List<Models.Comment>();
-            if (reader.HasRows)
+            if (commentReader.HasRows)
             {
-                while (reader.Read())
+                while (commentReader.Read())
                 {
                     Models.Comment comment = new Models.Comment();
-                    comment.Text = reader2.GetString(2);
+                    comment.Text = commentReader.GetString(3);
                     comments.Add(comment);
                 }
             }
