@@ -82,5 +82,10 @@ namespace Role_Based_Authorization.Controllers
 
             return View();
         }
+
+        public ActionResult Logout() {
+            Session.Clear();
+            return View("Index");
+        }
     }
 }
