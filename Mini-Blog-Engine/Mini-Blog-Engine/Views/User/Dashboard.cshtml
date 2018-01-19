@@ -1,3 +1,24 @@
 ﻿<div class="row">
     <h2>User Dashboard</h2>
+
+    <table style="width:100%">
+        <tr>
+            <th>UserId</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Content</th>
+            <th>CreatedOn</th>
+            <th>ModifiedOn</th>
+            <th>DeletedOn</th>
+        </tr>
+        @foreach (var tableItem in ViewBag.TableContent)
+        {
+            <tr>
+                @foreach (var TableItemitem in tableItem)
+                {
+                    <td>item.Name</td>
+                }
+            </tr>
+        }
+    </table>
 </div>
