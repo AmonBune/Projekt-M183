@@ -12,7 +12,25 @@ namespace Role_Based_Authorization.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            List<Models.BlogPost> posts = new List<Models.BlogPost>();
+            SqlConnection connection = createConnection();
+            SqlCommand sql = new SqlCommand();
+            sql.Connection = connection;
+            sql.CommandText = "SELECT * FROM [Post] WHERE [DeletedOn] IS NULL";
+
+            connection.Open();
+            SqlDataReader reader = sql.ExecuteReader();
+            if (reader.HasRows) {
+                while (reader.Read())
+                {
+                    Models.BlogPost post = new Models.BlogPost();
+                    post.Title = reader.GetString(2);
+                    post.Description = reader.GetString(3);
+                    post.Content = reader.GetString(4);
+                    posts.Add(post);
+                }
+            }
+            return View(posts);
         }
 
         public ActionResult About()
@@ -81,6 +99,19 @@ namespace Role_Based_Authorization.Controllers
             }           
 
             return View();
+        }
+
+        private SqlConnection createConnection() {
+            SqlConnection connection = new SqlConnection();
+            if (System.Security.Principal.WindowsIdentity.GetCurrent().Name == "GAMER-LAPTOP\\Gamer-Beast")
+            {
+                connection.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Gamer-Beast\\Documents\\git\\Projekt-M183\\Ressourcen_Projekt\\m183_project.mdf;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30;Application Name=EntityFramework";
+            }
+            else
+            {
+                connection.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Jan\\Documents\\Schule\\M183\\Test\\Projekt-M183\\Ressourcen_Projekt\\m183_project.mdf;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30;Application Name=EntityFramework";
+            }
+            return connection;
         }
 
         public ActionResult Logout() {
