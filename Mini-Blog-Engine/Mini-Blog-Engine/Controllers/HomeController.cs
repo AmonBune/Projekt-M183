@@ -121,7 +121,7 @@ namespace Role_Based_Authorization.Controllers
             return View("Index");
         }
 
-        public ActionResult ViewPost(int id)
+        public ActionResult ViewPost(int? id)
         {
             Models.BlogPost post = new Models.BlogPost();
             SqlConnection connection = createConnection();
