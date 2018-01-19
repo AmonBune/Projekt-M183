@@ -80,6 +80,7 @@ namespace Role_Based_Authorization.Controllers
                 string role = "";
                 while (reader.Read())
                 {
+                    Session["userid"] = reader.GetInt32(0);
                     role = reader.GetString(6);
                 }
                 if (role == "admin")
@@ -118,6 +119,29 @@ namespace Role_Based_Authorization.Controllers
         public ActionResult Logout() {
             Session.Clear();
             return View("Index");
+        }
+
+        public ActionResult ViewPost(int id)
+        {
+            Models.BlogPost post = new Models.BlogPost();
+            SqlConnection connection = createConnection();
+            SqlCommand sql = new SqlCommand();
+            sql.Connection = connection;
+            sql.CommandText = "SELECT * FROM [Post] WHERE [Id] = '" + id + "'";
+
+            connection.Open();
+            SqlDataReader reader = sql.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    post.Id = reader.GetInt32(0);
+                    post.Title = reader.GetString(2);
+                    post.Description = reader.GetString(3);
+                    post.Content = reader.GetString(4);
+                }
+            }
+            return View("Post", post);
         }
     }
 }
