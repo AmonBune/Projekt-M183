@@ -80,6 +80,12 @@ namespace Role_Based_Authorization.Controllers
             return View();
         }
 
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return RedirectToAction("Index");
+        }
+
         private SqlDataReader createConnection(string sql) {
             SqlConnection connection = new SqlConnection();
             if (System.Security.Principal.WindowsIdentity.GetCurrent().Name == "GAMER-LAPTOP\\Gamer-Beast")
@@ -99,42 +105,6 @@ namespace Role_Based_Authorization.Controllers
             sqlcommand.CommandText = sql;
             connection.Open();
             return sqlcommand.ExecuteReader();
-        }
-
-        public ActionResult Logout() {
-            Session.Clear();
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult ViewPost(int? id)
-        {
-            Models.BlogPost post = new Models.BlogPost();
-            string sql = "SELECT * FROM [Post] WHERE [Id] = '" + id + "'";
-            string query2 = "SELECT * FROM [Comment] WHERE [PostId] = " + id + "";
-            SqlDataReader reader = createConnection(sql);
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    post.Id = reader.GetInt32(0);
-                    post.Title = reader.GetString(2);
-                    post.Description = reader.GetString(3);
-                    post.Content = reader.GetString(4);
-                }
-            }
-            SqlDataReader reader2 = createConnection(query2);
-            List<Models.Comment> comments = new List<Models.Comment>();
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    Models.Comment comment = new Models.Comment();
-                    comment.Text = reader2.GetString(2);
-                    comments.Add(comment);
-                }
-            }
-            post.Comments = comments;
-            return View("Post", post);
         }
     }
 }

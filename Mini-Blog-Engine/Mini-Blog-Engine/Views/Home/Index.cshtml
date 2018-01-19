@@ -28,7 +28,7 @@
                 <td>@Html.Label(item.Title) | </td>
                 <td>@Html.Label(item.Description) |</td>
                 <td>@Html.Label(item.Content) |</td>
-                <td>@Html.ActionLink("Show","ViewPost","Home", new {id=item.Id},null)</td>
+                <td>@Html.ActionLink("Show","Index","Post", new {id=item.Id},null)</td>
             </tr>
         }
     </table>
