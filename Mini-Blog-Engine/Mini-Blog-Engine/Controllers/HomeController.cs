@@ -24,6 +24,7 @@ namespace Role_Based_Authorization.Controllers
                 while (reader.Read())
                 {
                     Models.BlogPost post = new Models.BlogPost();
+                    post.Id = reader.GetInt32(0);
                     post.Title = reader.GetString(2);
                     post.Description = reader.GetString(3);
                     post.Content = reader.GetString(4);
