@@ -8,7 +8,7 @@ namespace Role_Based_Authorization.Controllers
         public ActionResult Dashboard()
         {
             
-            var current_user = (string)Session["username"];
+            var current_user = (string)Session["role"];
             var user_roles = MvcApplication.UserRoles;
             var current_user_role = (string)user_roles[current_user];
 
