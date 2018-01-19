@@ -14,7 +14,16 @@ namespace Role_Based_Authorization.Controllers
 
             var current_user = (string)Session["role"];
             var user_roles = MvcApplication.UserRoles;
-            var current_user_role = (string)user_roles[current_user];
+            var current_user_role = "";
+
+            try
+            {
+                current_user_role = (string)user_roles[current_user];
+            }
+            catch (Exception)
+            {
+
+            }
 
             if (current_user_role == "User")
             {
@@ -42,20 +51,22 @@ namespace Role_Based_Authorization.Controllers
 
                 if (reader.HasRows)
                 {
-                    List<object> table = new List<object>(); // LIST FOR EVERYTHING
+                    List<List<object>> table = new List<List<object>>(); // LIST IN LIST FOR EVERYTHING
                     while (reader.Read())
                     {
-                        for (int i = 0; i < 8; i++)
+                        List<object> newTable = new List<object>();
+
+                        for (int i = 0; i < 8; i++) // one row
                         {
                             try
                             {
-                                table.Add(reader.GetString(i));
+                                newTable.Add(reader.GetString(i));
                             }
                             catch (Exception)
                             {
                                 try
                                 {
-                                    table.Add(reader.GetInt32(i));
+                                    newTable.Add(reader.GetInt32(i));
                                 }
                                 catch (Exception)
                                 {
@@ -63,12 +74,12 @@ namespace Role_Based_Authorization.Controllers
                                 }
                             }
                         }
-                    }
-                    
-                    ViewBag.table = table;
 
-                    return RedirectToAction("Dashboard", "Admin");
-                }
+                        table.Add(newTable);
+                    }
+
+                    ViewBag.table = table;
+                    }
                 else
                 {
                     ViewBag.Message = "Wrong Credentials";
