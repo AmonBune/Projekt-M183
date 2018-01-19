@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,7 +14,7 @@ namespace Role_Based_Authorization.Controllers
         public ActionResult Index(int id)
         {
             Models.BlogPost post = new Models.BlogPost();
-            string sql = "SELECT * FROM [Post] WHERE [Id] = '" + id + "'";
+            string sql = "SELECT * FROM [Post] WHERE [Id] = '" + id + "' AND [DeletedOn] IS NULL";
             string query2 = "SELECT * FROM [Comment] WHERE [PostId] = " + id + "";
             SqlDataReader reader = createConnection(sql);
             if (reader.HasRows)
@@ -45,10 +46,16 @@ namespace Role_Based_Authorization.Controllers
         public ActionResult PostComment(string content, int postid)
         {
             int id = (int)Session["userid"];
-            string query = "INSERT INTO [Comment] (PostId, UserId, Commet, CreatedOn) VALUES (" + postid + ", "+ id + ", '"+ content + "', @insertdate)";
-            SqlCommand command = insertData(query);
-            command.Parameters.AddWithValue("insertdate", DateTime.Now);
-            command.ExecuteNonQuery();
+            if (content.Length <= 200)
+            {
+                string query = "INSERT INTO [Comment] (PostId, UserId, Commet, CreatedOn) VALUES (@postid, @userid, @content, @insertdate)";
+                SqlCommand command = insertData(query);
+                command.Parameters.AddWithValue("insertdate", DateTime.Now);
+                command.Parameters.AddWithValue("postid", postid);
+                command.Parameters.AddWithValue("content", RemoveSpecialCharacters(content));
+                command.Parameters.AddWithValue("userid", id);
+                command.ExecuteNonQuery();
+            }
             return RedirectToAction("Index", new {id=postid});
         }
 
@@ -86,6 +93,19 @@ namespace Role_Based_Authorization.Controllers
             sqlcommand.CommandText = sql;
             connection.Open();
             return sqlcommand;
+        }
+
+        public string RemoveSpecialCharacters(string str)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in str)
+            {
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_')
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
         }
     }
 }
