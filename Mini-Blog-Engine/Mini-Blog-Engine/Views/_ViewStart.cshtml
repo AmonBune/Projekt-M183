@@ -1,3 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@if (Session["username"] != null)
+{
+    @Html.ActionLink("Logout", "Logout", "Home", null, null)
+}
