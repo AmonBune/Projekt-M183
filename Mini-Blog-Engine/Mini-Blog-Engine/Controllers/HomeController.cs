@@ -10,6 +10,19 @@ namespace Role_Based_Authorization.Controllers
 {
     public class HomeController : Controller
     {
+        /*
+         * 1) Warum haben Sie sich für gerade für den Hash Algorithmus (Usernamen & Passwort) entschieden?
+         * Antwort: WIr hatten keine Zeit, einen Hash Algorithmus einzubauen, aber wenn wir einen eingebaut hätten, hätten wir SHA-3 benutzt.
+         * Weil es eine einfache Implementation davon gibt, und SHA-3 sehr sicher ist https://stackoverflow.com/questions/14061299/simple-implementation-of-sha-3-keccak-hashing-to-the-wrong-output-in-c
+         * 
+         * 2) In der User-Login-Tabelle ist noch ein Feld für die IP-Adresse Reserviert. Welche Attacke lässt sich dadurch verhindern?
+         * Antwort: Session ID theft & Eavesdropping
+         * 
+         * 3) Erklären Sie, wie diese Attacke genau funktioniert und inwiefern die Gegenmassnahmen die Attacke vereitelt?
+         * Antwort: Wenn ein Hacker eine Session ID eines legitimen Users kopiert und 1:1 verwendet, kann durch die IP-Adresse erkannt werden, dass ein Hacker versucht, unerlaubt auf den Account zuzugreifen.
+         * 
+        */
+
         public ActionResult Index()
         {
             List<Models.BlogPost> posts = new List<Models.BlogPost>();
