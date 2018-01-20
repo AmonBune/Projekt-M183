@@ -14,7 +14,6 @@ namespace Role_Based_Authorization.Controllers
         public ActionResult Index(int id)
         {
             Models.BlogPost post = new Models.BlogPost();
-            string sql = "SELECT * FROM [Post] WHERE [Id] = '" + id + "'";
             string sql = "SELECT * FROM [Post] WHERE [Id] = '" + id + "' AND [DeletedOn] IS NULL";
             string query2 = "SELECT * FROM [Comment] WHERE [PostId] = " + id + "";
             SqlDataReader reader = createConnection(sql);

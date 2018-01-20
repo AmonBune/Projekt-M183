@@ -14,7 +14,6 @@ namespace Role_Based_Authorization.Controllers
         public ActionResult Index(int id)
         {
             Models.BlogPost post = new Models.BlogPost();
-            string sql = "SELECT * FROM [Post] WHERE [Id] = '" + id + "'";
             string sql = "SELECT * FROM [Post] WHERE [Id] = '" + id + "' AND [DeletedOn] IS NULL";
             string query2 = "SELECT * FROM [Comment] WHERE [PostId] = " + id + "";
             SqlDataReader reader = createConnection(sql);
@@ -47,13 +46,6 @@ namespace Role_Based_Authorization.Controllers
         public ActionResult PostComment(string content, int postid)
         {
             int id = (int)Session["userid"];
-<<<<<<< HEAD
-            string query = "INSERT INTO [Comment] (PostId, UserId, Commet, CreatedOn) VALUES (" + postid + ", " + id + ", '" + content + "', @insertdate)";
-            SqlCommand command = insertData(query);
-            command.Parameters.AddWithValue("insertdate", DateTime.Now);
-            command.ExecuteNonQuery();
-            return RedirectToAction("Index", new { id = postid });
-=======
             if (content.Length <= 200)
             {
                 string query = "INSERT INTO [Comment] (PostId, UserId, Commet, CreatedOn) VALUES (@postid, @userid, @content, @insertdate)";
@@ -65,7 +57,6 @@ namespace Role_Based_Authorization.Controllers
                 command.ExecuteNonQuery();
             }
             return RedirectToAction("Index", new {id=postid});
->>>>>>> 6240af45e099f1db66f1677838ff7704231292ff
         }
 
         private SqlDataReader createConnection(string sql)
@@ -74,10 +65,6 @@ namespace Role_Based_Authorization.Controllers
             if (System.Security.Principal.WindowsIdentity.GetCurrent().Name == "GAMER-LAPTOP\\Gamer-Beast")
             {
                 connection.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Gamer-Beast\\Documents\\git\\Projekt-M183\\Ressourcen_Projekt\\m183_project.mdf;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30;Application Name=EntityFramework";
-            }
-            else if (System.Security.Principal.WindowsIdentity.GetCurrent().Name == "GAMER-PC\\Amon Bune")
-            {
-                connection.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=E:\\Local Space\\git\\Projekt-M183\\Ressourcen_Projekt\\m183_project.mdf;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30;Application Name=EntityFramework";
             }
             else
             {
