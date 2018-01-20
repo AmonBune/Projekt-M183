@@ -16,7 +16,7 @@
             @Html.Raw(ViewBag.Message)
         </form>
     </div>
-    <table>
+    <table class="table">
         <tr>
             <th>Title</th>
             <th>Description</th>
@@ -25,9 +25,9 @@
         @foreach (Role_Based_Authorization.Models.BlogPost item in Model)
         {
             <tr>
-                <td>@Html.Label(item.Title) | </td>
-                <td>@Html.Label(item.Description) |</td>
-                <td>@Html.Label(item.Content) |</td>
+                <td>@Html.Label(item.Title)</td>
+                <td>@Html.Label(item.Description)</td>
+                <td>@Html.Label(item.Content)</td>
                 <td>@Html.ActionLink("Show","Index","Post", new {id=item.Id},null)</td>
             </tr>
         }

@@ -24,10 +24,7 @@ namespace Role_Based_Authorization.Controllers
             return Ok(apitoken);
         }
 
-        public IHttpActionResult Get()
-        {
-            return new TextResult("hello", Request);
-        }
+        
 
         public ActionResult About()
         {

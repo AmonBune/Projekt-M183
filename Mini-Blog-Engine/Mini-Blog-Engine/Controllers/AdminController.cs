@@ -7,10 +7,8 @@ namespace Role_Based_Authorization.Controllers
 {
     public class AdminController : Controller
     {
-
         public ActionResult Dashboard()
         {
-
             var current_user = (string)Session["role"];
 
             try

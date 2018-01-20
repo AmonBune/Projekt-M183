@@ -3,5 +3,7 @@
 }
 @if (Session["username"] != null)
 {
-    @Html.ActionLink("Logout", "Logout", "Home", null, null)
+    <font style="font-size:20pt; border:solid; border-color:lightblue; float:right; padding:1px; border-radius:4px;">
+        @Html.ActionLink("Logout", "Logout", "Home", null, null)
+    </font>
 }

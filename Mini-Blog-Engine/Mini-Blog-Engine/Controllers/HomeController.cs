@@ -14,7 +14,8 @@ namespace Role_Based_Authorization.Controllers
         {
             List<Models.BlogPost> posts = new List<Models.BlogPost>();
             SqlDataReader reader = createConnection("SELECT * FROM [Post] WHERE [DeletedOn] IS NULL");
-            if (reader.HasRows) {
+            if (reader.HasRows)
+            {
                 while (reader.Read())
                 {
                     Models.BlogPost post = new Models.BlogPost();
@@ -71,11 +72,10 @@ namespace Role_Based_Authorization.Controllers
                     return RedirectToAction("Dashboard", "User");
                 }
             }
-
-
-            else {
+            else
+            {
                 ViewBag.Message = "Wrong Credentials";
-            }           
+            }
 
             return View();
         }
@@ -86,7 +86,8 @@ namespace Role_Based_Authorization.Controllers
             return RedirectToAction("Index");
         }
 
-        private SqlDataReader createConnection(string sql) {
+        private SqlDataReader createConnection(string sql)
+        {
             SqlConnection connection = new SqlConnection();
             if (System.Security.Principal.WindowsIdentity.GetCurrent().Name == "GAMER-LAPTOP\\Gamer-Beast")
             {
