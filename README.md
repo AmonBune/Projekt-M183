@@ -1,2 +1,2 @@
-## Projekt-M183
-Dieses Projekt ist für die Nutzung am GIBZ bestimmt.
+## M183-Demo
+This project was created along the Module 183 to demonstrate real life application security situations.
